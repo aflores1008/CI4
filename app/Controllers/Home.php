@@ -14,54 +14,10 @@ class Home extends BaseController
         echo 'Bienvenido al API REST ';
     }
 
-  
-public function api()
-{ 
-
-    echo 'Bienvenido al API REST de registro de usuarios en Facebook ';
-    $usuarios = array(
-        "id"=> "1",
-        "Usuario" => "aflores",
-        "Nombre" => "Adriana",
-        "Apellido" => "Flores",
-        "Correo" => "adriianaflores2002@gmail.com",
-        "Telefono" => "+593990813877",
-        "Fecha de Registro" => "02-01-2023"
-    );
-
-    $perfil = array(
-        "Usuario" => "aflores",
-        "Fecha de Nacimiento" => "03-08-2002",
-        "Genero" => "Femenino",
-        "Ciudad" => "Portoviejo"
-    );
-    $publicaciones = array(
-        "idusurio" => "1",
-        "Contenido" => ".....",
-        "FechaPubli" => "09/7/2023"
-    );
-   
-    $resultado = array($usuarios,  $perfil, $publicaciones);
-
-    return $this->response->setJSON($resultado);
-}
-public function apirest()
-{ 
-   
-$parametros=array(
-    'message' => 'Aprendiendo a desarrollar aplicaciones en Facebook',
-                  'name' => 'Adriana',
-                  'caption' => 'Mi primer aplicacion en Facebook',
-                  'description' => 'Es genial');
-                
-        $resultado = array($parametros);
-
-                  return $this->response->setJSON($resultado);
-  
-}
-
+    
     public function login(){
 
+        
 return view('login');
     
     }
@@ -71,11 +27,14 @@ return view('login');
         $this->db=\Config\Database::connect();
         $query=$this->db->query("SELECT * FROM usuarios");
         $result=$query->getResult();
+      
         return $this->response->setJSON($result);
     
-
+    
+    
     }
-   
+    
+   /* Function: select (getUser (usuario))*/
     public function getUser($usuario)
     {
         $this->db=\Config\Database::connect();
@@ -84,6 +43,16 @@ return view('login');
         return $this->response->setJSON($result);
     
     }
+
+        /* Function: insert (create) data on the table usuarios */
+        public function create($usuari,$nombr,$apellid,$correo,$telf,$fechar){
+            $query = $this->db->query("insert into usuarios (usuario,nombre,apellido,correo_electronico,telefono,fecha_registro) 
+                                        values('$usuari','$nombr','$apellid','$correo','$telf','$fechar')");
+                if($query){
+                    return "success";
+                }else{
+                    return "failed";
+                }}
 
 
     public function deleteUser($id)
@@ -113,14 +82,6 @@ return view('login');
 }
 
     
-
-    public function testbd($cedula)
-    {
-        $this->db=\Config\Database::connect();
-        $query=$this->db->query("SELECT * FROM usuarios where cedula='$cedula' ");
-        $result=$query->getResult();
-        return $this->response->setJSON($result);
     
-        
-    }
+    
 }
